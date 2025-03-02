@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLoginUserMutation, useRegisterUserMutation } from "../features/api/authApi"
 import { useEffect, useState } from "react"
 import {
   Tabs,
@@ -17,13 +18,16 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-
+import axios from "axios"
+import { Loader2 } from "lucide-react"
 export default function Login() {
     const [signup,setSignup]=useState({name:"",email:"",password:""})
     const [login,setLogin]=useState({email:"",password:""})
+    const [registerUser,{data:registerData,error:registerError,isLoading:registerIsLoading,isSuccess:registerisSuccess}]=useRegisterUserMutation()
+    const [loginUser,{data:loginData,error:loginError,isLoading:loginIsLoading,success:loginIsSucess}]=useLoginUserMutation()
     const changeInput=(e,type)=>{
        
-        const {name,value}=e.target;
+        const {name,value}=e.target;  
         console.log("ee",e)
        if(type==="signup"){
 
@@ -33,13 +37,14 @@ export default function Login() {
         setLogin({...login,[name]:value})
        }
     }
-    const handleRegisteration=(e,type)=>
+    const handleRegisteration=async (e,type)=>
     {
         e.preventDefault()
         const inputData=type==="signup" ? signup : login
+        const action=type==="signup" ? registerUser : loginUser
+        await action(inputData)
+        console.log("ress",response)
         console.log("ii",inputData)
-
-
 
     }
   
@@ -73,7 +78,9 @@ export default function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={(e)=>{handleRegisteration(e,"signup")}}>SignUp</Button>
+            <Button disabled={registerIsLoading} onClick={(e)=>{handleRegisteration(e,"signup")}}>{registerIsLoading ? (<>
+            <Loader2 className="mr-2 h-4 animate-spin"/>
+            </>) :"sign up"}</Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -96,7 +103,11 @@ export default function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={(e)=>handleRegisteration(e,"login")}>Login</Button>
+            <Button disabled={loginIsLoading}onClick={(e)=>handleRegisteration(e,"login")}>{loginIsLoading ? (
+              <>
+              <Loader2 className="mr-2 h-4 animate-spin"/>
+              </>
+            ) :"Login"}</Button>
           </CardFooter>
         </Card>
       </TabsContent>

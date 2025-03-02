@@ -10,8 +10,7 @@ const userSchema=new mongoose.Schema({
     },
     password:{
         type:String,
-        enum:["instructor","student"],
-        default:"student"
+        required:true,
     },
     enrolledCourse:[
       {
