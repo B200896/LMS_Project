@@ -1,5 +1,6 @@
 //2KOueTJmAK3X3j1Z
 import { Button } from "@/components/ui/button"
+// import { useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
@@ -8,10 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLoginUserMutation, useRegisterUserMutation } from "../features/api/authApi"
 import { useEffect, useState } from "react"
+
 import {
   Tabs,
   TabsContent,
@@ -20,11 +23,12 @@ import {
 } from "@/components/ui/tabs"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 export default function Login() {
     const [signup,setSignup]=useState({name:"",email:"",password:""})
     const [login,setLogin]=useState({email:"",password:""})
     const [registerUser,{data:registerData,error:registerError,isLoading:registerIsLoading,isSuccess:registerisSuccess}]=useRegisterUserMutation()
-    const [loginUser,{data:loginData,error:loginError,isLoading:loginIsLoading,success:loginIsSucess}]=useLoginUserMutation()
+    const [loginUser,{data:loginData,error:loginError,isLoading:loginIsLoading,isSuccess:loginIsSucess}]=useLoginUserMutation()
     const changeInput=(e,type)=>{
        
         const {name,value}=e.target;  
@@ -43,13 +47,32 @@ export default function Login() {
         const inputData=type==="signup" ? signup : login
         const action=type==="signup" ? registerUser : loginUser
         await action(inputData)
-        console.log("ress",response)
+       
         console.log("ii",inputData)
 
     }
-  
+    const navigate=useNavigate()
+   useEffect(()=>{
+    if(registerisSuccess && registerData){
+        toast.success(registerData.message || "Signup Successful")
+    }
+    if(registerError)
+    {
+      toast.error(registerError.data?.message || "Signup Filed")
+    }
+    if(loginError)
+    {
+      toast.error(loginError.data?.message || "Login Failed")
+    }
+    if(loginIsSucess && loginData)
+    {
+      toast.success(loginData.message || "login Successful")
+      navigate('/')
+    }
+    
+   },[loginIsLoading,registerIsLoading,loginData,registerData,loginError,registerError])
   return (
-    <div className="flex item-center justify-center">
+    <div className="flex item-center justify-center mt-20">
     <Tabs defaultValue="account" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="signup">Signup</TabsTrigger>
