@@ -6,10 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
-const Profile = () => {
-    const isLoading = false; 
-    const enrolledCourses=[1,2]
+import { useLoadUserQuery } from "@/features/api/authApi";
 
+const Profile = () => {
+    const {data,isLoading}=useLoadUserQuery()
+    const enrolledCourses=[1,2]
+    console.log("use",data)
     return (
         <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
             <h1 className="font-bold text-2xl text-center md:text-left ml-2">PROFILE</h1>
