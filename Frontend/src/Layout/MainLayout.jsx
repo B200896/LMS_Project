@@ -1,15 +1,15 @@
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Navbar from '../Navbar';
 
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Navbar from '../Navbar'
-export const MainLayout = () => {
+export const MainLayout = ({ children }) => {
   return (
-    <div>
-        <div className='pt-16'>
-        <Navbar/>
-        <Outlet/>
-        </div>
-
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow mt-16 px-4">
+        <Outlet />
+        {children}
+      </main>
     </div>
-  )
-}
+  );
+};

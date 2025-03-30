@@ -1,20 +1,20 @@
-import { useState } from 'react'
-import './App.css'
-import Login from '../src/pages/Login'
-import Navbar from './Navbar'
-import { HeroSection } from './pages/Student/HeroSection'
-import { MainLayout } from './Layout/MainLayout'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Courses from './pages/Student/Courses' // Fixed import
-import { MyLearning } from './pages/Student/MyLearning'
-import Profile from './pages/Student/Profile'
+import React from 'react';
+import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { MainLayout } from './Layout/MainLayout';
+import { HeroSection } from './pages/Student/HeroSection';
+import Courses from './pages/Student/Courses';
+import { MyLearning } from './pages/Student/MyLearning';
+import Profile from './pages/Student/Profile';
+import Login from './pages/Login';
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
       {
-        index: true, // Default child route
+        index: true, // Default home page
         element: (
           <>
             <HeroSection />
@@ -23,32 +23,28 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "courses", // Fixed duplicate index issue
-        element: <Courses />,
+        path: "my-learning",
+        element: <MyLearning />,
       },
-
+      {
+        path: "my-profile",
+        element: <Profile />,
+      },
       {
         path: "login",
         element: <Login />,
       },
       {
-        path: "my-learning",
-        element: <MyLearning />,
+        path: "signup", // Add signup route if needed
+        element: <Login />, // Replace with actual Signup page
       },
-      {
-        path:"my-profile",
-        element:<Profile/>
-      }
-
     ],
   },
 ]);
 
 function App() {
   return (
-    <main>
-       <RouterProvider router={appRouter}/>
-    </main>
+    <RouterProvider router={appRouter} />
   );
 }
 
