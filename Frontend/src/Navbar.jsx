@@ -24,7 +24,7 @@ const Navbar = () => {
     useEffect(() => {
         const userData = sessionStorage.getItem('userData');
         setUser(userData ? JSON.parse(userData) : null);
-    }, [window.location.pathname]);
+    }, []);
 
     const handleLogout = () => {
         sessionStorage.removeItem('userData');
@@ -45,6 +45,7 @@ const Navbar = () => {
 
     return (
         <header className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 border-gray-200 fixed top-0 left-0 right-0 duration-300 flex items-center justify-between px-6 z-50'>
+            
             {/* Logo */}
             <div className='flex items-center gap-3'>
                 <School size={30} className='text-blue-500' />
@@ -56,6 +57,7 @@ const Navbar = () => {
                 {user ? (
                     <div className='flex items-center gap-4 relative' ref={dropdownRef}>
                         <Bell size={22} className='cursor-pointer' />
+                        
                         <DropdownMenu open={open} onOpenChange={setOpen}>
                             <DropdownMenuTrigger asChild>
                                 <Avatar className="cursor-pointer w-10 h-10">
@@ -63,16 +65,20 @@ const Navbar = () => {
                                     <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-44 bg-white shadow-md rounded-md p-2" align="end">
-                                <DropdownMenuLabel>{user.name || "My Account"}</DropdownMenuLabel>
+
+                            <DropdownMenuContent 
+                                className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-lg rounded-md p-2 z-50 max-h-[250px] overflow-auto"
+                                align="end"
+                            >
+                                <DropdownMenuLabel className="text-sm font-semibold">{user.name || "My Account"}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem onClick={() => navigate('/my-learning')}>My Learning</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => navigate('/my-profile')}>Edit Profile</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate('/my-learning')}>📚 My Learning</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate('/my-profile')}>✏️ Edit Profile</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handleLogout}>🚪 Log out</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/dashboard')}>📊 Dashboard</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
