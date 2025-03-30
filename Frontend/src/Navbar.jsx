@@ -24,7 +24,7 @@ const Navbar = () => {
     useEffect(() => {
         const userData = sessionStorage.getItem('userData');
         setUser(userData ? JSON.parse(userData) : null);
-    }, []);
+    }, [window.location.pathname]);
 
     const handleLogout = () => {
         sessionStorage.removeItem('userData');
