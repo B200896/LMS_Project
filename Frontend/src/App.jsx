@@ -1,7 +1,6 @@
 import React from 'react';
-import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { MainLayout } from './Layout/MainLayout';
+import MainLayout from './Layout/MainLayout'; // Ensure correct import
 import { HeroSection } from './pages/Student/HeroSection';
 import Courses from './pages/Student/Courses';
 import { MyLearning } from './pages/Student/MyLearning';
@@ -11,10 +10,10 @@ import Login from './pages/Login';
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <MainLayout />, // Wrap everything inside MainLayout
     children: [
       {
-        index: true, // Default home page
+        index: true,
         element: (
           <>
             <HeroSection />
@@ -22,30 +21,16 @@ const appRouter = createBrowserRouter([
           </>
         ),
       },
-      {
-        path: "my-learning",
-        element: <MyLearning />,
-      },
-      {
-        path: "my-profile",
-        element: <Profile />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "signup", // Add signup route if needed
-        element: <Login />, // Replace with actual Signup page
-      },
+      { path: "my-learning", element: <MyLearning /> },
+      { path: "my-profile", element: <Profile /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <Login /> }, // Replace with actual Signup page if needed
     ],
   },
 ]);
 
 function App() {
-  return (
-    <RouterProvider router={appRouter} />
-  );
+  return <RouterProvider router={appRouter} />;
 }
 
 export default App;
