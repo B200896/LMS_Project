@@ -25,6 +25,7 @@ export const register = async (req, res) => {
             email,
             password: hashPassword,
         })
+    
 
         if (userData) {
             return generateToken(res, userData, "new user created successfully")

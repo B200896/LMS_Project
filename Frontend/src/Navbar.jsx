@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { School, Bell, Menu } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DarkMode } from './pages/DarkMode';
-import { Link, useNavigate } from 'react-router-dom';
+
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -14,7 +15,9 @@ import {
     DropdownMenuGroup
 } from '@radix-ui/react-dropdown-menu';
 import { MobileNavbar } from './MobileNavbar';
-
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 const Navbar = () => {
     const [user, setUser] = useState(null);
     const [open, setOpen] = useState(false);
@@ -42,6 +45,8 @@ const Navbar = () => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+    const query = useQuery();
+const mode = query.get("mode") || "login";
 
     return (
         <header className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 border-gray-200 fixed top-0 left-0 right-0 duration-300 flex items-center justify-between px-6 z-50'>
@@ -73,19 +78,19 @@ const Navbar = () => {
                                 <DropdownMenuLabel className="text-sm font-semibold">{user.name || "My Account"}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem onClick={() => navigate('/my-learning')}>📚 My Learning</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => navigate('/my-profile')}>✏️ Edit Profile</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate('/my-learning')} className='cursor-pointer'>📚 My Learning</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate('/my-profile')} className='cursor-pointer'>✏️ Edit Profile</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={handleLogout}>🚪 Log out</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/dashboard')}>📊 Dashboard</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handleLogout} className='cursor-pointer'>🚪 Log out</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/dashboard')} className='cursor-pointer'>📊 Dashboard</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
                 ) : (
                     <div className='flex items-center gap-3'>
-                        <Button variant="outline" onClick={() => navigate('/login')}>Login</Button>
-                        <Button onClick={() => navigate('/signup')}>Signup</Button>
+                       <Button variant={mode === "login" ? "outline" : "default"} onClick={() => navigate('/auth?mode=login')}>Login</Button>
+            <Button variant={mode === "signup" ? "outline" : "default"} onClick={() => navigate('/auth?mode=signup')}>Signup</Button>
                     </div>
                 )}
                 <DarkMode />

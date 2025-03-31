@@ -7,6 +7,7 @@ import Courses from './pages/Student/Courses';
 import { MyLearning } from './pages/Student/MyLearning';
 import Profile from './pages/Student/Profile';
 import Login from './pages/Login';
+import AuthPage from './pages/Login';
 
 const appRouter = createBrowserRouter([
   {
@@ -31,13 +32,13 @@ const appRouter = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "login",
-        element: <Login />,
+        path: "/auth",
+        element: <AuthPage/>,
       },
-      {
-        path: "signup", // Add signup route if needed
-        element: <Login />, // Replace with actual Signup page
-      },
+      // {
+      //   path: "signup", // Add signup route if needed
+      //   element: <Login />, // Replace with actual Signup page
+      // },
     ],
   },
 ]);
