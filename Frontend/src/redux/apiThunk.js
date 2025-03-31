@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = 'http://localhost:5174'; // use http locally!
+const BASE_URL = 'http://localhost:8080'; // use http locally!
 
 // Public API instance
 const apiThunkPublic = axios.create({

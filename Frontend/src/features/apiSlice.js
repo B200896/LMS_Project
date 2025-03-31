@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunkPrivate } from './apiThunk';
-import { handleAsyncThunk } from './handleAsyncThunk';
+import { createAsyncThunkPrivate } from '../redux/apiThunk';
+import { handleAsyncThunk } from '../redux/handleAsynThunk';
 
 // Create your thunk
 export const fetchUser = createAsyncThunkPrivate('api/fetchUser', async (api, args, thunkAPI) => {

@@ -34,36 +34,49 @@ export default function AuthPage() {
     const handleRegisteration = async (e, type) => {
         e.preventDefault();
         const inputData = type === "signup" ? signup : login;
-        const action = (type === "signup") ? registerUser : loginUser;
-        await action(inputData);
-        if (type === "signup") {
-          setSignup({ name: "", email: "", password: "" });
-      } else {
-          setLogin({ email: "", password: "" });
-      }
-      navigate('/auth?mode=login')
-       
-    };
-
-    useEffect(() => {
-        if (registerisSuccess && registerData) {
-            toast.success(registerData.message || "Signup Successful");
-        }
-        if (registerError) {
-            toast.error(registerError.data?.message || "Signup Failed");
-        }
-        if (loginError) {
-            toast.error(loginError.data?.message || "Login Failed");
-        }
-        if (loginIsSucess && loginData) {
-            if (loginData?.token) {
-                window.sessionStorage.setItem("userData", JSON.stringify({ user: loginData.user, token: loginData?.token }));
+        const action = type === "signup" ? registerUser : loginUser;
+        console.log("actionn",inputData)
+        try {
+            const result = await action(inputData).unwrap();
+           
+            if (type === "signup") {
+                setSignup({ name: "", email: "", password: "" });
+                toast.success(result.message || "Signup Successful");
+                navigate("/auth?mode=login");
+            } else {
+                setLogin({ email: "", password: "" });
+              
+                if (result?.token) {
+                    window.sessionStorage.setItem("userData", JSON.stringify({ user: result.user, token: result.token }));
+                    toast.success(result.message || "Login Successful");
+                    navigate("/"); 
+                }
             }
-            toast.success(loginData.message || "Login Successful");
-            navigate('/');
-            window.location.reload();
+        } catch (err) {
+            toast.error(err?.data?.message || "Authentication Failed");
         }
-    }, [loginIsLoading, registerIsLoading, loginData, registerData, loginError, registerError]);
+    };
+    
+
+    // useEffect(() => {
+    //     if (registerisSuccess && registerData) {
+    //         toast.success(registerData.message || "Signup Successful");
+    //     }
+    //     if (registerError) {
+    //         toast.error(registerError.data?.message || "Signup Failed");
+    //     }
+    //     if (loginError) {
+    //         toast.error(loginError.data?.message || "Login Failed");
+    //     }
+    //     if (loginIsSucess && loginData) {
+    //         if (loginData?.token) {
+    //             window.sessionStorage.setItem("userData", JSON.stringify({ user: loginData.user, token: loginData?.token }));
+    //         }
+    //         toast.success(loginData.message || "Login Successful");
+    //         navigate('/');
+    //         // window.location.reload();
+    //     }
+    // }, [loginIsLoading, registerIsLoading, loginData, registerData, loginError, registerError]);
 
     return (
         <div className="flex item-center justify-center mt-20">

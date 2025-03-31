@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
-import { useLoadUserQuery, useUpdateUserMutation } from "@/features/api/authApi";
+// import { useLoadUserQuery, useUpdateUserMutation } from "@/features/api/authApi";
 import { useSelector } from "react-redux";
 const Profile = () => {
     const  selector=useSelector(user=>user)
