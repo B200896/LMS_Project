@@ -49,7 +49,7 @@ const Navbar = () => {
 const mode = query.get("mode") || "login";
 
     return (
-        <header className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 border-gray-200 fixed top-0 left-0 right-0 duration-300 flex items-center justify-between px-6 z-50'>
+        <header className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 border-gray-200 fixed top-0 left-0 right-0 duration-300 flex items-center justify-between px-6 z-50 overflow-hidden'>
             
             {/* Logo */}
             <div className='flex items-center gap-3'>
@@ -63,7 +63,7 @@ const mode = query.get("mode") || "login";
                     <div className='flex items-center gap-4 relative' ref={dropdownRef}>
                         <Bell size={22} className='cursor-pointer' />
                         
-                        <DropdownMenu open={open} onOpenChange={setOpen}>
+                        <DropdownMenu open={open} onOpenChange={setOpen} className='relative'>
                             <DropdownMenuTrigger asChild>
                                 <Avatar className="cursor-pointer w-10 h-10">
                                     <AvatarImage src={user.avatar || "https://github.com/shadcn.png"} alt="User" />
@@ -72,7 +72,7 @@ const mode = query.get("mode") || "login";
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent 
-                                className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-lg rounded-md p-2 z-50 max-h-[250px] overflow-auto"
+                                className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-lg rounded-md p-2 z-50 max-h-[250px] overflow-hidden"
                                 align="end"
                             >
                                 <DropdownMenuLabel className="text-sm font-semibold">{user.name || "My Account"}</DropdownMenuLabel>
