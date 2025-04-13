@@ -13,10 +13,10 @@ const MainLayout = () => {
                 <Outlet />
             </main>
 
-            {/* Optional Footer */}
+            {/* Optional Footer
             <footer className="bg-gray-800 text-white text-center py-4">
                 © 2025 E-Learning Platform
-            </footer>
+            </footer> */}
         </div>
     );
 };

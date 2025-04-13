@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,12 +6,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
-import { useLoadUserQuery } from "@/features/api/authApi";
-
+import { useLoadUserQuery, useUpdateUserMutation } from "@/features/api/authApi";
 const Profile = () => {
+    const [name,setName]=useState("")
+    const [profilePhoto,setProfilePhoto]=useState("")
     const {data,isLoading}=useLoadUserQuery()
+    const [updateUser,{data:updateUserData,isLoading:updateUserIsLoading,error}]=useUpdateUserMutation
     const enrolledCourses=[1,2]
-    console.log("use",data)
+    const onChangeHandler=(e)=>{
+        const file=e.target.files?.[0];
+        if(file) 
+        setProfilePhoto(file)
+
+
+    }
+    const upddateUserHandler=()=>{
+        console.log(name)
+
+
+    }
     return (
         <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
             <h1 className="font-bold text-2xl text-center md:text-left ml-2">PROFILE</h1>
@@ -71,7 +84,8 @@ const Profile = () => {
                                     <Label className="text-sm font-medium" htmlFor="name">
                                         Name
                                     </Label>
-                                    <Input id="name" placeholder="Enter your name" defaultValue="Suresh MernStack" />
+                                    <Input id="name" placeholder="Enter your name" defaultValue="Suresh MernStack" 
+                                    onChange={(e)=>{e.target.value}}/>
                                 </div>
                                 <div>
                                     <Label className="text-sm font-medium" htmlFor="email">
@@ -89,9 +103,9 @@ const Profile = () => {
                                     <Label className="text-sm font-medium" htmlFor="profile-photo">
                                         Profile Photo
                                     </Label>
-                                    <Input type="file" accept="image/*" id="profile-photo" className="col-span-3" />
+                                    <Input type="file" accept="image/*" id="profile-photo" onChange={onChangeHandler} className="col-span-3" />
                                 </div>
-                                <Button className="w-full bg-black hover:bg-gray-700 text-white" disabled={isLoading}>
+                                <Button className="w-full bg-black hover:bg-gray-700 text-white" disabled={isLoading} onClick={upddateUserHandler}>
                                     {isLoading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait

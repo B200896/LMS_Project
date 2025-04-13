@@ -7,8 +7,6 @@ import { useLoginUserMutation, useRegisterUserMutation } from "../features/api/a
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-
-// Helper function to read query parameters
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -43,6 +41,7 @@ export default function AuthPage() {
       } else {
           setLogin({ email: "", password: "" });
       }
+      navigate('/auth?mode=login')
        
     };
 
