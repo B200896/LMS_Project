@@ -7,11 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
 import { useLoadUserQuery, useUpdateUserMutation } from "@/features/api/authApi";
+import { useSelector } from "react-redux";
 const Profile = () => {
+    const  selector=useSelector(user=>user)
+    console
     const [name,setName]=useState("")
     const [profilePhoto,setProfilePhoto]=useState("")
     const {data,isLoading}=useLoadUserQuery()
-    const [updateUser,{data:updateUserData,isLoading:updateUserIsLoading,error}]=useUpdateUserMutation
+    const [updateUser,{data:updateUserData,isLoading:updateUserIsLoading,error}]=useUpdateUserMutation()
     const enrolledCourses=[1,2]
     const onChangeHandler=(e)=>{
         const file=e.target.files?.[0];
@@ -20,8 +23,25 @@ const Profile = () => {
 
 
     }
-    const upddateUserHandler=()=>{
-        console.log(name)
+    const updateUserHandler=async ()=>{
+        const formData=new FormData()
+        formData.append("name",name)
+        if(profilePhoto)
+        {
+            formData.append("profilePhoto",profilePhoto)
+
+        }
+        try{
+            const res=await updateUser(formData).unwrap()
+            .then((res)=>{
+                console.log("res",res)
+            })
+            console.log("User updated",res)
+
+        }
+        catch(err){
+            console.log("err",err)
+        }
 
 
     }
@@ -85,7 +105,7 @@ const Profile = () => {
                                         Name
                                     </Label>
                                     <Input id="name" placeholder="Enter your name" defaultValue="Suresh MernStack" 
-                                    onChange={(e)=>{e.target.value}}/>
+                                    onChange={(e)=>setName(e.target.value)}/>
                                 </div>
                                 <div>
                                     <Label className="text-sm font-medium" htmlFor="email">
@@ -105,7 +125,7 @@ const Profile = () => {
                                     </Label>
                                     <Input type="file" accept="image/*" id="profile-photo" onChange={onChangeHandler} className="col-span-3" />
                                 </div>
-                                <Button className="w-full bg-black hover:bg-gray-700 text-white" disabled={isLoading} onClick={upddateUserHandler}>
+                                <Button className="w-full bg-black hover:bg-gray-700 text-white cursor-pointer" disabled={isLoading} onClick={updateUserHandler}>
                                     {isLoading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait

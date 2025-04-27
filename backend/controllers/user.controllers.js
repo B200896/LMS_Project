@@ -1,6 +1,7 @@
 import { User } from "../models/user.models.js"
 import bcrypt from "bcryptjs"
 import { generateToken } from "../utils/generateToken.js"
+import { uploadMedia } from "../utils/cloudinary.js"
 export const register = async (req, res) => {
     console.log("Api hit")
 
@@ -41,8 +42,6 @@ export const register = async (req, res) => {
         })
 
     }
-
-
 
 }
 export const login = async (req, res) => {
@@ -100,8 +99,8 @@ export const logout = (req, res) => {
 }
 export const getUserProfile = async (req, res) => {
     try {
-        const userId = req.userId
-        const user = await User.findById(userId).select("-password")
+        
+        const user = await User.findById(req.id).select("-password")
         if (!user) {
             return res.status(404).json({
                 message: "Profile not found",
@@ -125,6 +124,7 @@ export const getUserProfile = async (req, res) => {
     }
 }
 export const updateProfile=async(req,res)=>{
+    console.log("id",req)
     try{
         const userId=req.id
         const {name}=req.body
@@ -143,7 +143,9 @@ export const updateProfile=async(req,res)=>{
             deleteMediaFromCloudinary(publicId)
 
         }
+        console.log("nnc",profilePhoto)
         const cloudResponse=await uploadMedia(profilePhoto.path)
+     
         const photoUrl=cloudResponse.secure_url
         const updatedData={name,photoUrl}
         const updatedUser=await User.findByIdAndUpdate(userId,updatedData,{new:true}).select(-"password")

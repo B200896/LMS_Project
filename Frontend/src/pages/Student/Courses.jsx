@@ -19,7 +19,7 @@ const Courses=()=>{
               <CourseSkeleton key={index} />
             ))
           ) : (
-          courses.map((course,index)=>
+          courses?.map((course,index)=>
            <Course/>)
           
 
