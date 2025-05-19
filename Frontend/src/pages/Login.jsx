@@ -7,6 +7,7 @@ import { useLoginUserMutation, useRegisterUserMutation } from "../features/api/a
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -30,34 +31,45 @@ export default function AuthPage() {
             setLogin({ ...login, [name]: value });
         }
     };
-
+const dispatch=useDispatch()
     const handleRegisteration = async (e, type) => {
         e.preventDefault();
         const inputData = type === "signup" ? signup : login;
         const action = type === "signup" ? registerUser : loginUser;
         console.log("actionn",inputData)
-        try {
-            const result = await action(inputData).unwrap();
-           
-            if (type === "signup") {
-                setSignup({ name: "", email: "", password: "" });
-                toast.success(result.message || "Signup Successful");
-                navigate("/auth?mode=login");
-            } else {
-                setLogin({ email: "", password: "" });
-              
-                if (result?.token) {
-                    window.sessionStorage.setItem("userData", JSON.stringify({ user: result.user, token: result.token }));
-                    toast.success(result.message || "Login Successful");
-                    navigate("/"); 
-                }
+        dispatch(action()).unwrap()
+        .then((res)=>{
+            if(res.error)
+            {
+                console.log(res)
             }
-        } catch (err) {
-            toast.error(err?.data?.message || "Authentication Failed");
-        }
-    };
-    
-
+            else
+            {
+                console.log("Login Successfull")
+            }
+        }).catch((error)=>{
+            console.log("error",error)
+        })
+        
+    //     try {
+    //         const result = await action(inputData).unwrap();        
+    //         if (type === "signup") {
+    //             setSignup({ name: "", email: "", password: "" });
+    //             toast.success(result.message || "Signup Successful");
+    //             navigate("/auth?mode=login");
+    //         } else {
+    //             setLogin({ email: "", password: "" });
+              
+    //             if (result?.token) {
+    //                 window.sessionStorage.setItem("userData", JSON.stringify({ user: result.user, token: result.token }));
+    //                 toast.success(result.message || "Login Successful");
+    //                 navigate("/"); 
+    //             }
+    //         }
+    //     } catch (err) {
+    //         toast.error(err?.data?.message || "Authentication Failed");
+    //     }
+    // };
     // useEffect(() => {
     //     if (registerisSuccess && registerData) {
     //         toast.success(registerData.message || "Signup Successful");
@@ -115,4 +127,5 @@ export default function AuthPage() {
             </Card>
         </div>
     );
+}
 }
